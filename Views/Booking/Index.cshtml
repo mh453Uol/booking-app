@@ -1,0 +1,40 @@
+﻿@model BarberBooking.Models.ViewModels.BookingViewModel
+
+@{
+ViewData["Title"] = "Booking";
+}
+
+<div class="progress w-100" style="height: 5px;">
+    <div class="progress-bar bg-success" role="progressbar" style="width: @Model.GetFormProgress()%" aria-valuenow="25" aria-valuemin="0"
+        aria-valuemax="100">
+    </div>
+</div>
+
+<div class="container-fluid">
+    @if(!Model.HasSelectedResource()) {
+        @await Component.InvokeAsync("ResourceList", @Model)
+    } else if(!Model.HasSelectedServices()) {
+        @await Component.InvokeAsync("ServiceList", @Model)
+    } else if(!Model.HasSelectedTime()) {
+        @await Component.InvokeAsync("SlotList", @Model)
+    } else {
+        <div class="card">
+  <div class="card-body">
+    <h4 class="card-title">@Model.Time.ToString("MMM dd"), @Model.Time.ToString("hh:mm") - 12:00 AM</h4>
+    <div class="text-muted">
+      @Model.Time.ToString("dddd, dd MMMM yyyy")
+    </div>
+    <p class="card-text">I love quick, simple pasta dishes, and this is one of my favorite.</p>
+    <a href="#" class="btn btn-info">Read Recipe</a>
+  </div>
+  <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
+    <div class="views">Oct 20, 12:45PM
+    </div>
+    <div class="stats">
+         <i class="far fa-eye"></i> 1347
+      <i class="far fa-comment"></i> 12
+    </div>
+  </div>
+</div>
+    }
+</div>
