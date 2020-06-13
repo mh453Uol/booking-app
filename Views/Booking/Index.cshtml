@@ -10,7 +10,6 @@ ViewData["Title"] = "Booking";
     </div>
 </div>
 
-<div class="container-fluid">
     @if(!Model.HasSelectedResource()) {
         @await Component.InvokeAsync("ResourceList", @Model)
     } else if(!Model.HasSelectedServices()) {
@@ -37,4 +36,3 @@ ViewData["Title"] = "Booking";
   </div>
 </div>
     }
-</div>
