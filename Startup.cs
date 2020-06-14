@@ -1,8 +1,10 @@
 using BarberBooking.Entities;
 using BarberBooking.Persistence;
+using BarberBooking.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -54,6 +56,7 @@ namespace BarberBooking
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
+            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddTransient<SeedData>();
         }
 

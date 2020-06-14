@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BarberBooking.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,17 +12,22 @@ namespace BarberBooking.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ConfirmEmailChangeModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        
+        [TempData]
+        public string StatusMessage { get; set; }
 
-        public ConfirmEmailChangeModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public ConfirmEmailChangeModel(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        [TempData]
-        public string StatusMessage { get; set; }
+        public ConfirmEmailChangeModel(string statusMessage)
+        {
+            this.StatusMessage = statusMessage;
+        }
 
         public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
         {
