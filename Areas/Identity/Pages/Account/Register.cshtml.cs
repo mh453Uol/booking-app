@@ -41,6 +41,7 @@ namespace BarberBooking.Areas.Identity.Pages.Account
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
+        public string Title { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -73,9 +74,10 @@ namespace BarberBooking.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string returnUrl = null, string title = null)
         {
             ReturnUrl = returnUrl;
+            Title = title;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 

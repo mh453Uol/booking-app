@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BarberBooking.Entities;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BarberBooking.Areas.Identity.Pages.Account
 {
@@ -22,13 +23,15 @@ namespace BarberBooking.Areas.Identity.Pages.Account
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<User> signInManager, 
+        public LoginModel(SignInManager<User> signInManager,
             ILogger<LoginModel> logger,
             UserManager<User> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+
+            IsEmailConfirmed = true;
         }
 
         [BindProperty]
@@ -38,11 +41,17 @@ namespace BarberBooking.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+        public string Title { get; private set; }
+
+
         [TempData]
         public string ErrorMessage { get; set; }
 
+        public bool IsEmailConfirmed { get; set; }
+
         public class InputModel
         {
+
             [Required]
             [EmailAddress]
             public string Email { get; set; }
@@ -55,7 +64,7 @@ namespace BarberBooking.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string title = null, string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
@@ -63,6 +72,8 @@ namespace BarberBooking.Areas.Identity.Pages.Account
             }
 
             returnUrl = returnUrl ?? Url.Content("~/");
+
+            Title = title;
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -94,6 +105,12 @@ namespace BarberBooking.Areas.Identity.Pages.Account
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
+                }
+                // IsNotAllowed - The current user email address is not yet verified
+                if (result.IsNotAllowed)
+                {
+                    IsEmailConfirmed = false;
+                    return Page();
                 }
                 else
                 {

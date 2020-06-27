@@ -56,8 +56,11 @@ namespace BarberBooking
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
-            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddTransient<SeedData>();
+
+            // Email
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthEmailSenderOptions>(Configuration.GetSection("AuthEmailSenderOptions"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

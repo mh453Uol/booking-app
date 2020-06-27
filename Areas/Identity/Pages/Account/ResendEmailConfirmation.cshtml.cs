@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.WebUtilities;
 namespace BarberBooking.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public abstract class ResendEmailConfirmationModel : PageModel
+    public class ResendEmailConfirmationModel : PageModel
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
@@ -36,8 +36,9 @@ namespace BarberBooking.Areas.Identity.Pages.Account
             public string Email { get; set; }
         }
 
-        public void OnGet()
+        public void OnGet(InputModel model)
         {
+            this.Input = model;
         }
 
         public async Task<IActionResult> OnPostAsync()

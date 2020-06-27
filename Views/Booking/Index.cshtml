@@ -1,27 +1,26 @@
 ﻿@model BarberBooking.Models.ViewModels.BookingViewModel
+@using Microsoft.AspNetCore.Identity
 
 @{
 ViewData["Title"] = "Booking";
 }
 
-<div class="progress w-100" style="height: 5px;">
-    <div class="progress-bar bg-success" role="progressbar" style="width: @Model.GetFormProgress()%" aria-valuenow="25" aria-valuemin="0"
-        aria-valuemax="100">
-    </div>
-</div>
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
-    @if(!Model.HasSelectedResource()) {
-        @await Component.InvokeAsync("ResourceList", @Model)
-    } else if(!Model.HasSelectedServices()) {
-        @await Component.InvokeAsync("ServiceList", @Model)
-    } else if(!Model.HasSelectedTime()) {
-        @await Component.InvokeAsync("SlotList", @Model)
-    } else {
-        <div class="card">
+@if(!Model.HasSelectedResource()) {
+  @await Component.InvokeAsync("ResourceList", @Model)
+ } else if(!Model.HasSelectedServices()) {
+  @await Component.InvokeAsync("ServiceList", @Model)
+} else if(!Model.HasSelectedTime()) {
+  @await Component.InvokeAsync("SlotList", @Model)
+} else {
+  
+<div class="card">
   <div class="card-body">
-    <h4 class="card-title">@Model.Time.ToString("MMM dd"), @Model.Time.ToString("hh:mm") - 12:00 AM</h4>
+    <h4 class="card-title">@Model.Time.Value.ToString("MMM dd"), @Model.Time.Value.ToString("hh:mm") - 12:00 AM</h4>
     <div class="text-muted">
-      @Model.Time.ToString("dddd, dd MMMM yyyy")
+      @Model.Time.Value.ToString("dddd, dd MMMM yyyy")
     </div>
     <p class="card-text">I love quick, simple pasta dishes, and this is one of my favorite.</p>
     <a href="#" class="btn btn-info">Read Recipe</a>
