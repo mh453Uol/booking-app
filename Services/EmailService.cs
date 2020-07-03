@@ -20,13 +20,13 @@ namespace BarberBooking.Services
             this.accessor = accessor;
             this.generator = generator;
         }
-        public async Task SendEmailConfirmation(string code, string userId, string email)
+        public async Task SendEmailConfirmation(string code, string userId, string email, string returnUrl)
         {
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = this.generator.GetUriByPage(accessor.HttpContext,
                 "/Account/ConfirmEmail",
                 handler: null,
-                values: new { area = "Identity", userId = userId, code = code });
+                values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl });
 
             await sender.SendEmailAsync(email, "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

@@ -10,6 +10,7 @@ using BarberBooking.Models.ViewModels;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
 using BarberBooking.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BarberBooking.Controllers
 {
@@ -47,6 +48,8 @@ namespace BarberBooking.Controllers
 
             return View(model);
         }
+
+        [Authorize]
 
         public IActionResult Create(BookingViewModel model)
         {

@@ -104,7 +104,7 @@ namespace BarberBooking.Areas.Identity.Pages.Account
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    await _emailService.SendEmailConfirmation(code,user.Id, user.Email);
+                    await _emailService.SendEmailConfirmation(code,user.Id, user.Email, returnUrl);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
