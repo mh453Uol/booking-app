@@ -25,21 +25,31 @@ namespace BarberBooking.Controllers
         }
 
         public IActionResult Index(BookingViewModel model)
-        {   
+        {
             Console.WriteLine(JsonConvert.SerializeObject(model));
             Console.WriteLine(JsonConvert.SerializeObject(ModelState.IsValid));
-        
+
             // 1. Check if user is signed in, if so return to Booking/Create View
             // 2. If user not signed in then redirect to login page
 
-            if (ModelState.IsValid) {
-                if (!_signInManager.IsSignedIn(User)) {
+            if (ModelState.IsValid)
+            {
+                if (_signInManager.IsSignedIn(User))
+                {
+                    return RedirectToAction("Create", model);
+                }
+                else
+                {
                     var url = Url.Action("Create", model);
-                    var title = "4. Login or Register";
-                    return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl = url, title = title});
+                    return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl = url });
                 }
             }
-        
+
+            return View(model);
+        }
+
+        public IActionResult Create(BookingViewModel model)
+        {
             return View(model);
         }
 

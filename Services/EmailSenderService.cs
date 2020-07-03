@@ -4,14 +4,15 @@ using FluentEmail.Core;
 using FluentEmail.SendGrid;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace BarberBooking.Services
 {
-    public class EmailSender : IEmailSender
+    public class EmailSenderService : IEmailSender
     {
         private AuthEmailSenderOptions Options { get; }
 
-        public EmailSender(IOptions<AuthEmailSenderOptions> options)
+        public EmailSenderService(IOptions<AuthEmailSenderOptions> options)
         {
             this.Options = options.Value;
         }
@@ -28,7 +29,7 @@ namespace BarberBooking.Services
                 .Body(htmlMessage, true)
                 .SendAsync();
 
-            Console.WriteLine(response);
+            Console.WriteLine(JsonConvert.SerializeObject(response));
         }
     }
 }

@@ -59,8 +59,10 @@ namespace BarberBooking
             services.AddTransient<SeedData>();
 
             // Email
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailSender, EmailSenderService>();
             services.Configure<AuthEmailSenderOptions>(Configuration.GetSection("AuthEmailSenderOptions"));
+            
+            services.AddTransient<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
