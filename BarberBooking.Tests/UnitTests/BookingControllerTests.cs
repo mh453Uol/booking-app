@@ -15,7 +15,7 @@ namespace BarberBooking.Tests
     {
 
         [Fact]
-        public void Index_ReturnsRedirectToRegister_WhenUserIsNotSignedIn()
+        public void Index_ReturnsRedirectToRegisterPage_WhenUserIsNotSignedIn()
         {
             var controller = new BookingController(new Mock<ILogger<BookingController>>().Object, new Mock<MockSignInManager>().Object);
 
@@ -42,6 +42,35 @@ namespace BarberBooking.Tests
 
             Assert.Equal("/Account/Register", viewResult.PageName);
             Assert.Equal("callbackUrl", viewResult.RouteValues["returnUrl"]);
+        }
+
+        [Fact]
+        public void Index_ReturnsToCreateBookingPage_WhenUserIsSignedIn()
+        {
+            var signInManager = new Mock<MockSignInManager>();
+
+            signInManager.Setup(
+                s => s.IsSignedIn(null)
+            ).Returns(true);
+
+            var controller = new BookingController(new Mock<ILogger<BookingController>>().Object, signInManager.Object);
+
+            var model = new BookingViewModel();
+            model.ResourceId = Guid.NewGuid();
+            model.ServicesId.Add(Guid.NewGuid());
+            model.Time = DateTime.Now;
+
+            var result = controller.Index(model);
+
+            Assert.True(controller.ModelState.IsValid);
+
+            var viewResult = Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("Create", viewResult.ActionName);
+            Assert.Equal(model.ResourceId, viewResult.RouteValues["resourceId"]);
+            Assert.Equal(model.ServicesId, viewResult.RouteValues["servicesId"]);
+            Assert.Equal(model.Time, viewResult.RouteValues["time"]);
+
         }
     }
 }
