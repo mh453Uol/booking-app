@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] - Tapprs 💈</title>
+
+  <environment include="Development">
+    <link rel="stylesheet" href="~/dist/vendors/bootstrap.min.css">
+  </environment>
+  <environment exclude="Development">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/minty/bootstrap.min.css" rel="stylesheet" integrity="sha384-HqaYdAE26lgFCJsUF9TBdbZf7ygr9yPHtxtg37JshqVQi6CCAo6Qvwmgc5xclIiV" crossorigin="anonymous">
+  </environment>
+  
+  <link rel="stylesheet" href="~/dist/main.css">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" asp-action="Index" asp-controller="Home">Tappr 💈</a>
+    <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" asp-action="Index" asp-controller="Booking">Book <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Notifications</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Switch account</a>
+        </li>
+        </ul>
+        <partial name="_LoginPartial" />
+    </div>
+  </nav>
+
+  <div class="nav-clear"></div>
+
+  @if(Model is IProgressable) {
+    <div class="progress w-100" style="height: 5px;">
+        <div class="progress-bar bg-primary" role="progressbar" style="width: @Model.GetProgress()%" aria-valuenow="@Model.GetProgress()" aria-valuemin="0"
+            aria-valuemax="100">
+        </div>
+    </div>
+  }
+
+<div class="content-container">  
+  <main role="main" class="container-fluid">
+
+    <!-- <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow">
+      <img class="mr-3" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-outline.svg" alt="" width="48"
+        height="48">
+      <div class="lh-100">
+        <h6 class="mb-0 text-white lh-100">Bootstrap</h6>
+        <small>Since 2011</small>
+      </div>
+    </div> -->
+    @RenderBody()
+
+    <!-- <div class="my-3 p-3 bg-white rounded box-shadow">
+      <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
+      <div class="media text-muted pt-3">
+        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark"></strong>
+          Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+          condimentum nibh, ut fermentum massa justo sit amet risus.
+        </p>
+      </div>
+      <div class="media text-muted pt-3">
+        <img data-src="holder.js/32x32?theme=thumb&bg=e83e8c&fg=e83e8c&size=1" alt="" class="mr-2 rounded">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark"></strong>
+          Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+          condimentum nibh, ut fermentum massa justo sit amet risus.
+        </p>
+      </div>
+      <div class="media text-muted pt-3">
+        <img data-src="holder.js/32x32?theme=thumb&bg=6f42c1&fg=6f42c1&size=1" alt="" class="mr-2 rounded">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark"></strong>
+          Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+          condimentum nibh, ut fermentum massa justo sit amet risus.
+        </p>
+      </div>
+      <small class="d-block text-right mt-3">
+        <a href="#">All updates</a>
+      </small>
+    </div> -->
+
+    <!-- <div class="my-3 p-3 bg-white rounded box-shadow">
+      <h6 class="border-bottom border-gray pb-2 mb-0">Suggestions</h6>
+      <div class="media text-muted pt-3">
+        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <strong class="text-gray-dark">Zafran Ali</strong>
+            <a href="#">Next</a>
+          </div>
+          <span class="d-block"></span>
+        </div>
+      </div>
+      <div class="media text-muted pt-3">
+        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <strong class="text-gray-dark">Rizwan Ali</strong>
+            <button type="button" class="btn" href="#">Next</a>
+          </div>
+          <span class="d-block"></span>
+        </div>
+      </div>
+      <div class="media text-muted pt-3">
+        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <strong class="text-gray-dark">Full Name</strong>
+            <a href="#">Next</a>
+          </div>
+          <span class="d-block"></span>
+        </div>
+      </div>
+      <small class="d-block text-right mt-3">
+        <a href="#">All suggestions</a>
+      </small>
+    </div> -->
+
+  </main>
+</div>
+
+
+  <environment include="Development">
+    <script src="~/dist/vendors/jquery.min.js"></script>
+    <script src="~/dist/vendors/bootstrap.min.js"></script>
+    <script src="~/dist/vendors/poppers.min.js"></script>
+    <script src="~/dist/main.js"></script>
+  </environment>
+
+  <environment exclude="Development">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </environment>
+
+  @RenderSection("Scripts", required: false)
+</body>
+
+</html>

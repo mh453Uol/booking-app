@@ -1,0 +1,17 @@
+﻿@model BarberBooking.Models.ViewModels.BookingViewModel
+@using Microsoft.AspNetCore.Identity
+
+@{
+ViewData["Title"] = "Booking";
+}
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@if(!Model.HasSelectedResource()) {
+  @await Component.InvokeAsync("ResourceList", @Model)
+ } else if(!Model.HasSelectedServices()) {
+  @await Component.InvokeAsync("ServiceList", @Model)
+} else if(!Model.HasSelectedTime()) {
+  @await Component.InvokeAsync("SlotList", @Model)
+}

@@ -1,0 +1,31 @@
+@model BarberBooking.Models.ViewModels.BookingViewModel
+    <h3>3. Select a slot</h3>
+
+    @foreach(var date in Model.Slots) {
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <div class="float-left font-weight-bold">@date.Key.ToString("dddd, dd MMMM yyyy")</div>
+                    <div class="float-right font-weight-bold"><span class="badge badge-info">@date.Value.Count() slots</span></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row no-gutters">
+                    @foreach(var slot in date.Value)
+                    {
+                        <div class="col-3 col-md-2 col-lg-1 time-slot">
+                            <a class="btn btn-outline-primary" 
+                               role="button"
+                               href=@Url.Action("Index", "Booking", new {
+                                   resourceId = Model.ResourceId,
+                                   servicesId = Model.ServicesId,
+                                   time = slot
+                               })>@slot.ToString("hh:mm tt")</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <button type="button" class="btn btn-secondary btn-block">Load more slots</button>

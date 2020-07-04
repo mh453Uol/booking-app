@@ -1,0 +1,17 @@
+@model BarberBooking.Models.ViewModels.BookingViewModel
+
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">@Model.Time.Value.ToString("ddd dd MMM"), @Model.Time.Value.ToString("hh:mm") - 12:00 AM</h4>
+    <p class="card-text">Haircut and Beard with Zafran</p>
+    <a href="#" class="btn btn-info">Read Recipe</a>
+  </div>
+  <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
+    <div class="views">Oct 20, 12:45PM
+    </div>
+    <div class="stats">
+         <i class="far fa-eye"></i> 1347
+      <i class="far fa-comment"></i> 12
+    </div>
+  </div>
+</div>
