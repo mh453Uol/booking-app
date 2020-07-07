@@ -5,7 +5,7 @@ using BarberBooking.Entities;
 
 namespace BarberBooking.Models.ViewModels
 {
-    public class BookingViewModel: IProgressable
+    public class BookingViewModel : IProgressable
     {
         public List<User> Resources { get; set; }
         public List<Service> Services { get; set; }
@@ -14,12 +14,37 @@ namespace BarberBooking.Models.ViewModels
         [Required]
         public Guid? ResourceId { get; set; }
 
-        [Required] 
+        [Required]
+        [MinLength(1)]
         public List<Guid> ServicesId { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime? Time { get; set; }
+
+        public DateTime? From
+        {
+            get
+            {
+                return this.Time;
+            }
+        }
+
+        public DateTime? To
+        {
+            get
+            {
+                var start = this.From.GetValueOrDefault();
+
+                var services = this.Services.FindAll(s => this.ServicesId.Contains(s.Id));
+
+                services.ForEach(s => start.Add(s.Duration));
+
+                return start;
+            }
+        }
+
+        public bool IsBookingSlotAvailable { get; set; }
 
         public BookingViewModel()
         {
@@ -29,6 +54,7 @@ namespace BarberBooking.Models.ViewModels
 
             ServicesId = new List<Guid>();
 
+            IsBookingSlotAvailable = true;
         }
 
         public bool HasSelectedResource()
@@ -50,20 +76,21 @@ namespace BarberBooking.Models.ViewModels
         {
             if (HasSelectedResource() && HasSelectedServices() && HasSelectedTime())
             {
-                return 100;
+                return 80;
             }
 
-             if (HasSelectedResource() && HasSelectedServices())
+            if (HasSelectedResource() && HasSelectedServices())
             {
-                return 75;
+                return 60;
             }
 
             if (HasSelectedResource())
             {
-                return 50;
+                return 40;
             }
 
-            return 25;
+            return 20;
         }
+
     }
 }

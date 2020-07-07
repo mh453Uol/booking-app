@@ -34,11 +34,12 @@ namespace BarberBooking.Entities
         public string Lastname { get; set; }
 
         public Guid? TenantId { get; set; }
+
         [ForeignKey("TenantId")]
         public Tenant Tenant { get; set; }
 
         public List<TradingHour> BookableHours { get; set; }
 
-        public TimeSpan SlotInterval { get; set; }
+        public TimeSpan? SlotInterval { get; set; }
     }
 }

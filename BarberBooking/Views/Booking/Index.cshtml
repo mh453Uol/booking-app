@@ -14,4 +14,27 @@ ViewData["Title"] = "Booking";
   @await Component.InvokeAsync("ServiceList", @Model)
 } else if(!Model.HasSelectedTime()) {
   @await Component.InvokeAsync("SlotList", @Model)
+} else {
+      
+  <h3>3. Confirm Booking</h3>
+
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">@Model.From.Value.ToString("ddd dd MMM"), @Model.From.Value.ToString("hh:mm") - @Model.To.Value.ToString("hh:mm")</h4>
+      <p class="card-text">
+        @foreach(var service in Model.Services) {
+          <span class="service">@service.Name</span>
+        }
+      </p>
+      <a href="#" class="btn btn-info">Read Recipe</a>
+    </div>
+    <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
+      <div class="views">Oct 20, 12:45PM
+      </div>
+      <div class="stats">
+          <i class="far fa-eye"></i> 1347
+        <i class="far fa-comment"></i> 12
+      </div>
+    </div>
+  </div>
 }

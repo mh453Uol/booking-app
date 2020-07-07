@@ -8,12 +8,10 @@
     }
 }
 
-<h3 class="title">@ViewData["Title"]</h3>
-
 <div class="row">
     <div class="col-md-4">
+        <h3 class="title">@ViewData["Title"]</h3>
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.Firstname"></label>
@@ -40,7 +38,16 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+
+            <div class="form-group">
+                <p>
+                    <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Already have an account (Login) ?</a>
+                </p>
+            </div>
         </form>
     </div>
 </div>

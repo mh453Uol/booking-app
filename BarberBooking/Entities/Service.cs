@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BarberBooking.Entities
 {
@@ -19,5 +20,10 @@ namespace BarberBooking.Entities
 
         [MaxLength(256)]
         public string Description { get; set; }
+
+        public Guid TenantId { get; set; }
+
+        [ForeignKey("TenantId")]
+        public Tenant Tenant { get; set; }
     }
 }

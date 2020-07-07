@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
 using BarberBooking.Entities;
 using Microsoft.AspNetCore.Authorization;
+using BarberBooking.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace BarberBooking.Controllers
 {
@@ -18,31 +20,36 @@ namespace BarberBooking.Controllers
     {
         private readonly ILogger<BookingController> _logger;
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationDbContext _dbContext;
 
-        public BookingController(ILogger<BookingController> logger, SignInManager<User> signInManager)
+        public BookingController(ILogger<BookingController> logger, SignInManager<User> signInManager,
+            ApplicationDbContext dbContext)
         {
             _logger = logger;
             _signInManager = signInManager;
+            _dbContext = dbContext;
         }
 
-        public IActionResult Index(BookingViewModel model)
+        public async Task<IActionResult> Index(BookingViewModel model)
         {
             Console.WriteLine(JsonConvert.SerializeObject(model));
             Console.WriteLine(JsonConvert.SerializeObject(ModelState.IsValid));
 
-            // 1. Check if user is signed in, if so return to Booking/Create View
-            // 2. If user not signed in then redirect to register page
+            // 1. If user not signed in then redirect to register page
 
             if (ModelState.IsValid)
             {
-                if (_signInManager.IsSignedIn(User))
+                if (!_signInManager.IsSignedIn(User))
                 {
-                    return RedirectToAction("Create", model);
+                    var url = Url.Action("Index", model);
+                    return RedirectToPage("/Account/Register", new { area = "Identity", returnUrl = url });
                 }
                 else
                 {
-                    var url = Url.Action("Create", model);
-                    return RedirectToPage("/Account/Register", new { area = "Identity", returnUrl = url });
+                    model.Services = await _dbContext.Services.Where(s => model.ServicesId.Contains(s.Id)).ToListAsync();
+                    model.Resources = new List<User>() { 
+                        await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(f => f.Id == model.ResourceId.Value.ToString()) 
+                    };
                 }
             }
 
@@ -50,9 +57,25 @@ namespace BarberBooking.Controllers
         }
 
         [Authorize]
-
-        public IActionResult Create(BookingViewModel model)
+        public async Task<IActionResult> Create(BookingViewModel model)
         {
+            // 1. If model is valid
+            //  1.1 If booking slot available
+            //      - Create booking
+            //  1.2 If booking slot NOT available
+            //      - Display message to user with option to change slots
+
+            if (ModelState.IsValid)
+            {
+                var bookings = await _dbContext.Bookings.AsNoTracking().AnyAsync(b => b.From > model.To || b.To < b.From);
+
+                if (bookings)
+                {
+                    model.IsBookingSlotAvailable = false;
+                    return View(model);
+                }
+            }
+
             return View(model);
         }
 

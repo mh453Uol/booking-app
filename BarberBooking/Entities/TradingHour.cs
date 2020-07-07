@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BarberBooking.Entities
 {
+    // Trading Hours are associated by individual employees
     public class TradingHour: Audit
     {
         public Guid Id { get; set; }
@@ -10,9 +11,14 @@ namespace BarberBooking.Entities
         public TimeSpan Open { get; set; }
         public TimeSpan Closed { get; set; }
 
-        public string UserId { get; set; }
+        public string ResourceId { get; set; }
 
-        [ForeignKey("UserId")]
-        public User User { get; set; }
+        [ForeignKey("ResourceId")]
+        public User Resource { get; set; }
+
+        public Guid TenantId { get; set; }
+
+        [ForeignKey("TenantId")]
+        public Tenant Tenant { get; set; }
     }
 }
