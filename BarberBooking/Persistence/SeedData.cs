@@ -24,10 +24,11 @@ public class SeedData
     {
         await _context.Database.EnsureCreatedAsync();
 
+        var employees = new List<User>();
+
         if (!_context.Roles.Any())
         {
             string[] roles = new string[] { "Administrator", "Manager", "Employee", "User" };
-
 
             foreach (var role in roles)
             {
@@ -42,21 +43,6 @@ public class SeedData
             await _context.SaveChangesAsync();
         }
 
-        if (!_context.Tenants.Any())
-        {
-            _context.Tenants.Add(new Tenant()
-            {
-                Name = "Freshcuts Barbers",
-                Slug = "freshcuts-barbers",
-                Services = new List<Service>() {
-                    new Service() { Name = "Short Back & Sides", Duration = TimeSpan.FromMinutes(30), Price = 7.00M},
-                    new Service() { Name = "Skin Fade", Duration = TimeSpan.FromMinutes(30), Price = 10.00M}
-                }
-            });
-
-            await _context.SaveChangesAsync();
-        }
-
         if (!_context.Users.Any())
         {
             var employee = new User()
@@ -65,7 +51,6 @@ public class SeedData
                 Firstname = "Za",
                 Lastname = "Al",
                 Email = "za@test.com",
-                Tenant = _context.Tenants.FirstOrDefault(t => t.Name == "Freshcuts Barbers")
             };
 
             var addedUser = await _userManager.CreateAsync(employee, "FakePa55word#");
@@ -75,6 +60,37 @@ public class SeedData
                 await _userManager.AddToRoleAsync(employee, "Employee");
             }
 
+            await _context.SaveChangesAsync();
+
+            employees.Add(employee);
+        }
+
+        if (!_context.Tenants.Any())
+        {
+            _context.Tenants.Add(new Tenant()
+            {
+                Name = "Freshcuts Barbers",
+                Slug = "freshcuts-barbers",
+                CreatedBy = employees[0],
+                UpdatedBy = employees[0],
+                Services = new List<Service>()
+                {
+                        new Service() {
+                            Name = "Short Back & Sides",
+                            Duration = TimeSpan.FromMinutes(30),
+                            Price = 7.00M,
+                            CreatedBy = employees[0],
+                            UpdatedBy = employees[0]
+                        },
+                        new Service() {
+                            Name = "Skin Fade",
+                            Duration = TimeSpan.FromMinutes(30),
+                            Price = 10.00M,
+                            CreatedBy = employees[0],
+                            UpdatedBy = employees[0]
+                        }
+                    }
+            });
             await _context.SaveChangesAsync();
         }
     }

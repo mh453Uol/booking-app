@@ -6,18 +6,16 @@ namespace BarberBooking.Entities
 {
     public class Audit
     {
-        [Required]
-        [ForeignKey("CreatedBy")] 
         public string CreatedById { get; set; }
         
+        [ForeignKey("CreatedById")] 
         public User CreatedBy { get; set; }
 
         public DateTime Created { get; set; }
 
-        [Required]
-        [ForeignKey("UpdatedBy")] 
         public string UpdatedById { get; set; }
         
+        [ForeignKey("UpdatedById")] 
         public User UpdatedBy { get; set; }
     
         public DateTime Updated { get; set; }
