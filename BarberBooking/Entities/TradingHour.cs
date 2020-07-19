@@ -11,14 +11,13 @@ namespace BarberBooking.Entities
         public TimeSpan Open { get; set; }
         public TimeSpan Closed { get; set; }
 
+        [ForeignKey("Resource")]
         public string ResourceId { get; set; }
-
-        [ForeignKey("ResourceId")]
         public User Resource { get; set; }
 
-        public Guid TenantId { get; set; }
 
-        [ForeignKey("TenantId")]
+        [ForeignKey("Tenant")]
+        public Guid TenantId { get; set; }
         public Tenant Tenant { get; set; }
     }
 }

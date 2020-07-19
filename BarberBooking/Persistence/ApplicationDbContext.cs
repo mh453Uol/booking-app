@@ -13,7 +13,7 @@ namespace BarberBooking.Persistence
 
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<Service> Services { get; set; }
-        public DbSet<TradingHour> OpeningHours { get; set; }
+        public DbSet<TradingHour> TradingHours { get; set; }
         public DbSet<Booking> Bookings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -38,23 +38,22 @@ namespace BarberBooking.Persistence
             builder.Entity<BookingService>()
                 .HasOne(bs => bs.UpdatedBy)
                 .WithMany()
-                .HasForeignKey(bs => bs.UpdatedById)
-                .IsRequired(true);
+                .HasForeignKey(bs => bs.UpdatedById);
 
             builder.Entity<Tenant>().HasMany(r => r.Users).WithOne(r => r.Tenant);
             builder.Entity<Tenant>().HasOne(r => r.CreatedBy).WithMany().HasForeignKey(r => r.CreatedById).IsRequired(true);
-            builder.Entity<Tenant>().HasOne(r => r.UpdatedBy).WithMany().HasForeignKey(r => r.UpdatedById).IsRequired(true);
+            builder.Entity<Tenant>().HasOne(r => r.UpdatedBy).WithMany().HasForeignKey(r => r.UpdatedById);
 
             builder.Entity<TradingHour>().HasOne(r => r.Resource).WithOne();
             builder.Entity<TradingHour>().HasOne(r => r.CreatedBy).WithMany().HasForeignKey(r => r.CreatedById).IsRequired(true);
-            builder.Entity<TradingHour>().HasOne(r => r.UpdatedBy).WithMany().HasForeignKey(r => r.UpdatedById).IsRequired(true);
+            builder.Entity<TradingHour>().HasOne(r => r.UpdatedBy).WithMany().HasForeignKey(r => r.UpdatedById);
 
             builder.Entity<Booking>().HasMany(r => r.Services);
             builder.Entity<Booking>().HasOne(r => r.CreatedBy).WithMany().HasForeignKey(r => r.CreatedById).IsRequired(true);
-            builder.Entity<Booking>().HasOne(r => r.UpdatedBy).WithMany().HasForeignKey(r => r.UpdatedById).IsRequired(true);
+            builder.Entity<Booking>().HasOne(r => r.UpdatedBy).WithMany().HasForeignKey(r => r.UpdatedById);
 
             builder.Entity<Service>().HasOne(r => r.CreatedBy).WithMany().HasForeignKey(r => r.CreatedById).IsRequired(true);
-            builder.Entity<Service>().HasOne(r => r.UpdatedBy).WithMany().HasForeignKey(r => r.UpdatedById).IsRequired(true);
+            builder.Entity<Service>().HasOne(r => r.UpdatedBy).WithMany().HasForeignKey(r => r.UpdatedById);
 
             base.OnModelCreating(builder);
         }

@@ -24,8 +24,6 @@ public class SeedData
     {
         await _context.Database.EnsureCreatedAsync();
 
-        var employees = new List<User>();
-
         if (!_context.Roles.Any())
         {
             string[] roles = new string[] { "Administrator", "Manager", "Employee", "User" };
@@ -62,32 +60,30 @@ public class SeedData
 
             await _context.SaveChangesAsync();
 
-            employees.Add(employee);
         }
 
         if (!_context.Tenants.Any())
         {
+            var employee = _context.Users.First();
+            
             _context.Tenants.Add(new Tenant()
             {
                 Name = "Freshcuts Barbers",
                 Slug = "freshcuts-barbers",
-                CreatedBy = employees[0],
-                UpdatedBy = employees[0],
+                CreatedById = employee.Id,
                 Services = new List<Service>()
                 {
                         new Service() {
                             Name = "Short Back & Sides",
                             Duration = TimeSpan.FromMinutes(30),
                             Price = 7.00M,
-                            CreatedBy = employees[0],
-                            UpdatedBy = employees[0]
+                            CreatedById = employee.Id,
                         },
                         new Service() {
                             Name = "Skin Fade",
                             Duration = TimeSpan.FromMinutes(30),
                             Price = 10.00M,
-                            CreatedBy = employees[0],
-                            UpdatedBy = employees[0]
+                            CreatedById = employee.Id,
                         }
                     }
             });
