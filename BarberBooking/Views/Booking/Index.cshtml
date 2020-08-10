@@ -20,7 +20,10 @@ ViewData["Title"] = "Booking";
 
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">@Model.From.Value.ToString("ddd dd MMM"), @Model.From.Value.ToString("hh:mm") - @Model.To.Value.ToString("hh:mm")</h4>
+      <h4 class="card-title">
+        
+        @Model.From.Value.ToString("ddd dd MMM"), @Model.From.Value.ToString("hh:mm") - @Model.To.Value.ToString("hh:mm")</h4>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
       <p class="card-text">
         @foreach(var service in Model.Services) {
           <span class="service">@service.Name</span>

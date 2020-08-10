@@ -42,11 +42,11 @@ namespace BarberBooking.Controllers
                 if (!_signInManager.IsSignedIn(User))
                 {
                     var url = Url.Action("Index", model);
-                    return RedirectToPage("/Account/Register", new { area = "Identity", returnUrl = url });
+                    return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl = url });
                 }
                 else
                 {
-                    model.Services = await _dbContext.Services.Where(s => model.ServicesId.Contains(s.Id)).ToListAsync();
+                    model.Services = _dbContext.Services.AsNoTracking().Where(s => model.ServicesId.Contains(s.Id)).ToList();
                     model.Resources = new List<User>() { 
                         await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(f => f.Id == model.ResourceId.Value.ToString()) 
                     };

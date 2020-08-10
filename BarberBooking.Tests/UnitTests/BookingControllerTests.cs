@@ -17,7 +17,7 @@ namespace BarberBooking.Tests
         [Fact]
         public void Index_ReturnsRedirectToRegisterPage_WhenUserIsNotSignedIn()
         {
-            var controller = new BookingController(new Mock<ILogger<BookingController>>().Object, new Mock<MockSignInManager>().Object);
+            var controller = new BookingController(new Mock<ILogger<BookingController>>().Object, new Mock<MockSignInManager>().Object, null);
 
             var mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
 
@@ -53,7 +53,7 @@ namespace BarberBooking.Tests
                 s => s.IsSignedIn(null)
             ).Returns(true);
 
-            var controller = new BookingController(new Mock<ILogger<BookingController>>().Object, signInManager.Object);
+            var controller = new BookingController(new Mock<ILogger<BookingController>>().Object, signInManager.Object, null);
 
             var model = new BookingViewModel();
             model.ResourceId = Guid.NewGuid();
